@@ -64,8 +64,8 @@ def wrap_connection_error(fn):
         log.debug("Requesting %s(%s, %s)", fn, args, kw)
         try:
             res = fn(self, *args, **kw)
-        except requests.ConnectionError:
-            raise NoConnection(self.webdav.hostname)
+        except requests.ConnectionError as exc:
+            raise NoConnection(self.webdav.hostname) from exc
         except requests.RequestException as re:
             raise ConnectionException(re)
         else:
